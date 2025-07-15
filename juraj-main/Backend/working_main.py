@@ -13,7 +13,7 @@ import numpy as np
 from contextlib import asynccontextmanager
 from sentence_transformers import SentenceTransformer
     
-# === New: Import LLM engine ===
+# === Import LLM engine ===
 from llama_cpp import Llama
 
 # Configure logging
@@ -215,9 +215,8 @@ class MessageRequest(BaseModel):
 class TTSRequest(BaseModel):
     text: str
 
-# Initialize Whisper model for transcription endpoint
 import whisper
-model = whisper.load_model("base")  # Or "small", "medium", "large" based on your needs
+model = whisper.load_model("base")
 
 @app.post("/transcribe")
 async def transcribe_audio_from_mic():

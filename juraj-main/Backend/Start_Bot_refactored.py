@@ -6,19 +6,16 @@ import requests
 from sentence_transformers import SentenceTransformer
 import faiss
 
-# === Константы ===
 SIMILARITY_THRESHOLD = 0.7
 MAX_CONTEXT_CHARS = 1000
 MAX_TOKENS = 300
 LLM_ENDPOINT = "http://localhost:1234/v1/chat/completions"
 
-# === Модель эмбеддингов ===
 embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
 
 def embed(text: str) -> np.ndarray:
     return embedding_model.encode(text)
 
-# === Загрузка данных ===
 with open("data/intents.json", "r", encoding="utf-8") as f:
     all_intents = json.load(f)
 
@@ -30,7 +27,6 @@ with open("data/docs.pkl", "rb") as f:
 
 index = faiss.read_index("data/karlsruhe_index.faiss")
 
-# === Поиск интента ===
 def detect_intent(user_input: str, all_intents: list[str]) -> str | None:
     best_score = 0.0
     best_intent = None
@@ -43,7 +39,6 @@ def detect_intent(user_input: str, all_intents: list[str]) -> str | None:
             best_intent = intent
     return best_intent if best_score > 0.5 else None
 
-# === Основная функция генерации ответа ===
 def generate_response(user_input: str) -> str:
     try:
         vector = embed(user_input)
@@ -76,7 +71,7 @@ def generate_response(user_input: str) -> str:
         )
 
         payload = {
-            "model": "zephyr-7b-beta-GGUF",  # укажи нужную модель
+            "model": "mistral-7b-instruct-v0.1.Q4_K_M",
             "messages": [{"role": "user", "content": prompt_text.strip()}],
             "stream": False,
             "max_tokens": MAX_TOKENS,

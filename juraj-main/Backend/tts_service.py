@@ -7,7 +7,7 @@ import langdetect
 import torch
 import torch.serialization
 
-# Coqui globals fix for torch >= 2.6
+# Coqui
 try:
     from TTS.tts.configs.xtts_config import XttsConfig
     from TTS.tts.models.xtts import XttsAudioConfig, XttsArgs
@@ -26,7 +26,7 @@ except ImportError:
     COQUI_AVAILABLE = False
     logging.warning("⚠️ Coqui TTS not available, using fallback TTS")
 
-# Optional fallback TTS
+# Fallback to pyttsx3
 try:
     import pyttsx3
     PYTTSX3_AVAILABLE = True
